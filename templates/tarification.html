@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculer la tarification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hatran&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Calculer la tarification</h2>
+        <form action="/submit-tarification" method="post">
+            <label for="chiffre-affaire">Chiffre d’affaire journalier maximum (en €)</label>
+            <input type="number" id="chiffre-affaire" name="chiffre_affaire" placeholder="Entrez le chiffre d’affaire" required step="0.01">
+            
+            <label for="couts-fixes">Coûts fixes (en €)</label>
+            <input type="number" id="couts-fixes" name="couts_fixes" placeholder="Entrez les coûts fixes" required>
+            
+            <label for="pluviometrie">Niveau de pluviométrie journalier pivot (en mm)</label>
+            <input type="number" id="pluviometrie" name="pluviometrie" placeholder="Entrez le niveau de pluviométrie" required>
+            
+            <label for="date-souscription">Date de souscription</label>
+            <input type="date" id="date-souscription" name="date_souscription" required>
+            
+            <label for="ville">Ville de localisation de son commerce</label>
+            <input type="text" id="ville" name="ville" placeholder="Entrez la ville" required>
+            
+            <button type="submit">Soumettre</button>
+        </form>
+        <button id="back-button">Retour à l'accueil</button>
+    </div>
+
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p>Êtes-vous sûr de vouloir retourner à l'accueil ? Les données non sauvegardées seront perdues.</p>
+            <button id="confirm-back">Oui</button>
+            <button id="cancel-back">Non</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('back-button').addEventListener('click', function() {
+            document.getElementById('confirmation-modal').style.display = 'block';
+        });
+
+        document.getElementById('confirm-back').addEventListener('click', function() {
+            window.location.href = '/';
+        });
+
+        document.getElementById('cancel-back').addEventListener('click', function() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
