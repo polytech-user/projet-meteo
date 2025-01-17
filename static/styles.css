@@ -118,3 +118,10 @@ button:hover {
 .modal-content button {
     margin: 5px;
 }
+
+.success-message {
+    border: 2px solid green;
+    color: green;
+    padding: 10px;
+    margin: 10px 0;
+}
