@@ -21,17 +21,19 @@ def tarification():
     return render_template("tarification.html")
         
 # Route pour l'auto-complétion des villes
-@routes.route('/cherche_villes', methods=['GET'])
-def chercher_ville():
-    
+@routes.route('/autocomplete', methods=['GET'])
+def autocomplete():
     # Récupérer la valeur tapée par l'utilisateur
-    query = request.args.get('query', '').lower()  # 'query' est le paramètre envoyé par AJAX
+    query = request.args.get('q', '').lower()  # 'query' est le paramètre envoyé par AJAX
     if query:
         # Recherche les communes qui contiennent la chaîne saisie
-        villes = Commune.query.filter(Commune.nom_commune.ilike(f"%{query}%")).all()
+        villes = Commune.query.filter(Commune.nom_commune.ilike(f"%{query}%")).limit(4).all()
         # Retourner les résultats sous forme de JSON
         return jsonify([{'id': ville.id, 'nom_commune': ville.nom_commune, 'code_postal': ville.code_postal} for ville in villes])
     return jsonify([])  # Si rien n'est tapé, retourner une liste vide
 
 
+@routes.route('/test',methods=['GET', 'POST'])
+def test():
+    return render_template('testSearchCities.html')
 

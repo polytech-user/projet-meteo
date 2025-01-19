@@ -127,3 +127,27 @@ button:hover {
     margin: 10px 0;
 }
 
+#autocomplete-results {
+    width: 100%; /* Align width with input field */
+    border: 1px solid #ccc; /* Match border color with input */
+    border-radius: 4px; /* Adjust border-radius */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add box shadow for depth */
+    position: absolute; /* Position list right below input */
+    top: auto;
+    left: 0;
+    pointer-events: auto;
+    font-family: 'Noto Sans Hatran', sans-serif; /* Ensure consistent font styles */
+    font-size: 16px;
+    margin-top: -1px; /* Remove unwanted margins */
+    background-color: #fff; /* Background color for dropdown */
+}
+
+.autocomplete-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.autocomplete-item:hover {
+    background-color: #581515;
+}
+
