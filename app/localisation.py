@@ -1,5 +1,5 @@
 import requests
-import json
+
 
 # Utilisation de l'API de Nominatim pour récupérer les latitudes et longitudes des villes
 url = "https://nominatim.openstreetmap.org/search"
@@ -23,7 +23,8 @@ def get_coordinates(city : str) -> tuple:
         data = response.json()
         lat = data[0]["lat"]
         long = data[0]["lon"]
-        return (lat, long)
+        name = data[0]["name"]
+        return (lat, long), name
     else:
         print(f"Erreur lors de la récupération des données : Erreur {response.status_code} - Raison : {response.reason}")
         return None

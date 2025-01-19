@@ -28,6 +28,7 @@
             
             <label for="ville">Ville de localisation de son commerce</label>
             <input type="text" id="ville" name="ville" placeholder="Entrez la ville" required>
+            <div id="autocomplete-list"></div>
             
             <button type="submit">Soumettre</button>
         </form>
@@ -42,30 +43,6 @@
         </div>
     </div>
 
-    <script>
-        document.getElementById('back-button').addEventListener('click', function() {
-            document.getElementById('confirmation-modal').style.display = 'block';
-        });
-
-        document.getElementById('confirm-back').addEventListener('click', function() {
-            window.location.href = '/';
-        });
-
-        document.getElementById('cancel-back').addEventListener('click', function() {
-            document.getElementById('confirmation-modal').style.display = 'none';
-        });
-
-        document.getElementById('tarificationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            fetch('/tarification', {
-                method: 'POST',
-                body: formData
-            }).then(response => response.text())
-              .then(data => {
-                  document.body.innerHTML = data;
-              });
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
 </body>
 </html>

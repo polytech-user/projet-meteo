@@ -37,6 +37,7 @@ div {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 400px;
+    position: relative; /* Added to position the autocomplete list relative to this container */
 }
 
 .form-container h2 {
@@ -53,9 +54,9 @@ div {
 .form-container input {
     width: 100%;
     padding: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 0; /* Remove bottom margin */
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0; /* Adjust border-radius to match the autocomplete list */
 }
 
 button {
@@ -125,3 +126,4 @@ button:hover {
     padding: 10px;
     margin: 10px 0;
 }
+

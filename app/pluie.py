@@ -7,7 +7,7 @@ url = "https://archive-api.open-meteo.com/v1/archive"
 def get_precipitation(city : str, start_date : str , end_date : str) -> tuple:
     
     # Récupération des coordonnées de la ville nécessaires à la requête météo
-    lat, long = get_coordinates(city)
+    (lat, long), _ = get_coordinates(city)
     
     params = {
 	"latitude": lat,
@@ -33,3 +33,5 @@ def get_precipitation(city : str, start_date : str , end_date : str) -> tuple:
     
     
 # print(get_precipitation("Nice","2024-01-01","2025-01-01"))
+
+
