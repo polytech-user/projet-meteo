@@ -39,7 +39,6 @@ def get_precipitation(city : str, start_date : str , end_date : str) -> pd.DataF
 
 
 
-
 # Obtenir les valeurs des précipitations depuis x années
 def get_precipitation_x_years_ago(city : str, date : str, years : int = 10) -> pd.DataFrame:
     year, month, day = date.split('-')
@@ -51,7 +50,9 @@ def get_precipitation_x_years_ago(city : str, date : str, years : int = 10) -> p
     return df
     
 
-# df = get_precipitation_10_years_ago('Nice','2025-01-01')
+# df = get_precipitation_x_years_ago('Nice','2014-01-01')
+# df_jan_1 = df[df['Date'].str.endswith('01-01')].head(11)
+# print(df_jan_1)
 # print(df)
 # print(df.loc[df['Date'] == '2019-11-23'])
 # max_precipitation_date = df.loc[df['Date'].idxmax(), 'Date']
@@ -75,10 +76,8 @@ def daily_mean_precipitation_on_x_years(city : str, date: str, years: int = 10) 
     ).reset_index()
     
     grouped['Moyenne_Precipitation_Pondérée'] = grouped['Somme_Poids'] / grouped['Total_Poids']
-    result = grouped[['MM-DD', 'Moyenne_Precipitation_Pondérée']].rename(columns={
-        'MM-DD': 'Date'
-    })
-    
+    result = grouped[['MM-DD', 'Moyenne_Precipitation_Pondérée']]
+           
     return result
     
 
@@ -91,10 +90,10 @@ def daily_mean_precipitation_on_x_years(city : str, date: str, years: int = 10) 
 
 # Calcul des probabilités des 3 cas : plt > pivot, 0 < plt < pivot, et plt = 0 
 def get_daily_proba_precipitation(city : str, date : str, pl_pivot : float, years: int = 10) -> pd.DataFrame:
-    df_10_years_rain = get_precipitation_x_years_ago(city, date, years)
-    df_10_years_rain['MM-DD'] = df_10_years_rain['Date'].str[5:]
+    df_x_years_rain = get_precipitation_x_years_ago(city, date, years)
+    df_x_years_rain['MM-DD'] = df_x_years_rain['Date'].str[5:]
     result = (
-        df_10_years_rain.groupby("MM-DD")["Précipitation"]
+        df_x_years_rain.groupby("MM-DD")["Précipitation"]
         .agg(**{
             "Probabilité de plt > pivot": lambda x: ((x >= pl_pivot).sum())/years,
             "Probabilité de 0 < plt < pivot": lambda x: (((x > 0) & (x < pl_pivot)).sum())/years
@@ -106,5 +105,11 @@ def get_daily_proba_precipitation(city : str, date : str, pl_pivot : float, year
     return result
     
     
-# print(get_daily_proba_precipitation('Nice','2025-01-15',2))
+# print(get_daily_proba_precipitation('Nice','2014-01-01',2))
 
+def get_daily_factor(city : str, date : str, pl_pivot : float, years : int = 10) -> pd.DataFrame:
+    mean_plt = daily_mean_precipitation_on_x_years(city, date, years)
+    mean_plt['facteur'] = (pl_pivot - mean_plt['Moyenne_Precipitation_Pondérée']) / pl_pivot
+    return mean_plt
+
+# print(get_daily_factor('Nice', '2014-01-01', 2))
