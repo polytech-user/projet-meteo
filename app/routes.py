@@ -26,8 +26,12 @@ def autocomplete():
     # Récupérer la valeur tapée par l'utilisateur
     query = request.args.get('q', '').lower()  # 'query' est le paramètre envoyé par AJAX
     if query:
-        # Recherche les communes qui contiennent la chaîne saisie
-        villes = Commune.query.filter(Commune.nom_commune.ilike(f"%{query}%")).limit(4).all()
+        if query.isdigit():  # Vérifie si la query est composée uniquement de chiffres
+            # Recherche par code postal
+            villes = Commune.query.filter(Commune.code_postal.ilike(f"{query}%")).limit(3).all()
+        else:
+            # Recherche les communes qui contiennent la chaîne saisie
+            villes = Commune.query.filter(Commune.nom_commune.ilike(f"%{query}%")).limit(3).all()
         # Retourner les résultats sous forme de JSON
         return jsonify([{'id': ville.id, 'nom_commune': ville.nom_commune, 'code_postal': ville.code_postal} for ville in villes])
     return jsonify([])  # Si rien n'est tapé, retourner une liste vide

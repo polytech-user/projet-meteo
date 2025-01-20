@@ -6,6 +6,7 @@
     <title>Calculer la tarification</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hatran&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
 <body>
     <div class="form-container">
@@ -26,9 +27,10 @@
             <label for="date-souscription">Date de souscription</label>
             <input type="date" id="date-souscription" name="date_souscription" required>
             
-            <label for="ville">Ville de localisation de son commerce</label>
-            <input type="text" id="ville" name="ville" placeholder="Entrez la ville" autocomplete="off" required>
-            <div id="autocomplete-list"></div>
+            <label for="ville">Ville de localisation de votre commerce</label>
+            <input type="hidden" name="ville_id" id="ville_id">
+            <input type="text" id="ville_input" name="ville" placeholder="Entrez le nom de votre ville ou son code postal" autocomplete="off" required>
+            <div id="autocomplete-results"></div>
             
             <button type="submit">Soumettre</button>
         </form>
@@ -43,6 +45,7 @@
         </div>
     </div>
 
+    <script src="{{ url_for('static', filename='js/searchCities.js')}}"></script>
     <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
 </body>
 </html>

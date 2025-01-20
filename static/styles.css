@@ -20,7 +20,7 @@ h1 {
 
 div {
     text-align: center;
-    margin-top: 20px;
+    margin-top: auto;
 }
 
 .button-container {
@@ -37,6 +37,7 @@ div {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 400px;
+    margin-top: 10px;
     position: relative; /* Added to position the autocomplete list relative to this container */
 }
 
@@ -47,16 +48,19 @@ div {
 
 .form-container label {
     display: block;
+    margin-top: 8px;
     margin-bottom: 8px;
     color: #0056b3;
 }
 
 .form-container input {
-    width: 100%;
+    width: 80%;
     padding: 8px;
     margin-bottom: 0; /* Remove bottom margin */
     border: 1px solid #ccc;
-    border-radius: 4px 4px 0 0; /* Adjust border-radius to match the autocomplete list */
+    border-radius: 4px 4px 0 0;
+    
+     
 }
 
 button {
@@ -69,6 +73,7 @@ button {
     font-size: 16px;
     border-radius: 5px;
     font-family: 'Noto Sans Hatran', serif;
+    
 }
 
 button:hover {
@@ -83,6 +88,7 @@ button:hover {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: -0px;
 }
 
 .form-container button:hover {
@@ -128,26 +134,34 @@ button:hover {
 }
 
 #autocomplete-results {
-    width: 100%; /* Align width with input field */
+    width: 85%; /* Align width with input field */
     border: 1px solid #ccc; /* Match border color with input */
     border-radius: 4px; /* Adjust border-radius */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add box shadow for depth */
-    position: absolute; /* Position list right below input */
-    top: auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /*Add box shadow for depth*/
+    /* position: absolute;  */
+    top: 100%;
     left: 0;
     pointer-events: auto;
     font-family: 'Noto Sans Hatran', sans-serif; /* Ensure consistent font styles */
     font-size: 16px;
     margin-top: -1px; /* Remove unwanted margins */
     background-color: #fff; /* Background color for dropdown */
+    height: auto;
+    margin-left: 30px;
+    font-size: small;
+   
+    
 }
 
 .autocomplete-item {
     padding: 8px;
     cursor: pointer;
+    
+    
 }
 
 .autocomplete-item:hover {
-    background-color: #581515;
+    background-color: #4b8295;
 }
+
 
