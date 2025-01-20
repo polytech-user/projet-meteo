@@ -38,9 +38,12 @@ def get_precipitation(city : str, start_date : str , end_date : str) -> pd.DataF
 # print(get_precipitation("Nice","2024-01-01","2025-01-01"))
 
 
-def get_precipitation_10_years_ago(city : str, date : str) -> pd.DataFrame:
+
+
+# Obtenir les valeurs des précipitations depuis x années
+def get_precipitation_x_years_ago(city : str, date : str, years : int = 10) -> pd.DataFrame:
     year, month, day = date.split('-')
-    year = str(int(year) - 10)
+    year = str(int(year) - years)
     start_date = '-'.join([year,month,day])
     
     df = get_precipitation(city,start_date,date)
@@ -48,14 +51,16 @@ def get_precipitation_10_years_ago(city : str, date : str) -> pd.DataFrame:
     return df
     
 
-df = get_precipitation_10_years_ago('Nice','2025-01-01')
-print(df)
+# df = get_precipitation_10_years_ago('Nice','2025-01-01')
+# print(df)
 # print(df.loc[df['Date'] == '2019-11-23'])
 # max_precipitation_date = df.loc[df['Date'].idxmax(), 'Date']
 # print(f"La date associée à la précipitation maximale est : {max_precipitation_date}")
 
-def daily_mean_precipitation_on_10_years(city : str, date: str) -> pd.DataFrame:
-    df = get_precipitation_10_years_ago(city, date)
+
+# Calcule la moyenne pondérée des précipitations journalières sur x années (les années récentes ont plus de poids)
+def daily_mean_precipitation_on_x_years(city : str, date: str, years: int = 10) -> pd.DataFrame:
+    df = get_precipitation_x_years_ago(city, date, years)
     
     df['MM-DD'] = df['Date'].str[5:]
     df['Année'] = df['Date'].str[:4].astype(int)
@@ -77,6 +82,29 @@ def daily_mean_precipitation_on_10_years(city : str, date: str) -> pd.DataFrame:
     return result
     
 
-# df = daily_mean_precipitation_on_10_years('Nice', '2025-01-01')
+# df = daily_mean_precipitation_on_x_years('Nice', '2014-01-01')
 # print(df)
-# print(df.loc[df['Année'] == 2020, 'Poids'])
+# # Filtrer les valeurs pour le mois de février
+# df_february = df[df['Date'].str.startswith('02-')]
+# print(df_february)
+
+
+# Calcul des probabilités des 3 cas : plt > pivot, 0 < plt < pivot, et plt = 0 
+def get_daily_proba_precipitation(city : str, date : str, pl_pivot : float, years: int = 10) -> pd.DataFrame:
+    df_10_years_rain = get_precipitation_x_years_ago(city, date, years)
+    df_10_years_rain['MM-DD'] = df_10_years_rain['Date'].str[5:]
+    result = (
+        df_10_years_rain.groupby("MM-DD")["Précipitation"]
+        .agg(**{
+            "Probabilité de plt > pivot": lambda x: ((x >= pl_pivot).sum())/years,
+            "Probabilité de 0 < plt < pivot": lambda x: (((x > 0) & (x < pl_pivot)).sum())/years
+        }).reset_index()
+    )
+    
+    result["Probabilité de plt = 0"] = 1 - result["Probabilité de plt > pivot"] - result["Probabilité de 0 < plt < pivot"]
+    
+    return result
+    
+    
+# print(get_daily_proba_precipitation('Nice','2025-01-15',2))
+

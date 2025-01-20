@@ -3,7 +3,7 @@ def CA_plt(CA : float, plt : float, pl_pivot : float) -> float:
     Calcule le chiffre d'affaire à la date t, en cas de pluviométrie de niveau plt.
 
     Paramètres :
-        CA (float) : Chiffre d'affaire initial.
+        CA (float) : Chiffre d'affaire maximum journalier
         plt (float) : Niveau de pluviométrie à la date t.
         pl_pivot (float) : Niveau pivot de pluviométrie.
 
@@ -24,7 +24,7 @@ def R_plt(CA : float, Cf : float, plt : float, pl_pivot : float) -> float:
     Calcule le résultat à la date t, en cas de pluviométrie de niveau plt.
 
     Paramètres :
-        CA (float): Chiffre d'affaires.
+        CA (float): Chiffre d'affaire journalier maximum.
         Cf (float): Coût fixe.
         plt (float): Niveau de pluviométrie à la date t.
         pl_pivot (float): Niveau pivot de pluviométrie.
@@ -39,3 +39,6 @@ def R_plt(CA : float, Cf : float, plt : float, pl_pivot : float) -> float:
         return f*CA - Cf
     elif plt == 0:
         return CA - Cf
+    
+    
+    
