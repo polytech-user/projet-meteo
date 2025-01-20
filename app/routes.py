@@ -16,7 +16,7 @@ def tarification():
         pluviometrie = request.form['pluviometrie']
         date_souscription = request.form['date_souscription']
         ville = request.form['ville']
-        
+        ville = ville.split(" (")[0]
         return render_template("tarification.html", message="Votre formulaire a bien été envoyé.")
     return render_template("tarification.html")
         
