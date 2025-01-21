@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import numpy as np
+import time
 from localisation import get_coordinates, headers
 
 # L'API utilisée pour récupérer les données historiques de la météo
@@ -35,7 +36,7 @@ def get_precipitation(city : str, start_date : str , end_date : str) -> pd.DataF
         return None
     
     
-# print(get_precipitation("Nice","2024-01-01","2025-01-01"))
+# print(get_precipitation("Nice","2025-01-01","2025-01-15"))
 
 
 
@@ -110,6 +111,51 @@ def get_daily_proba_precipitation(city : str, date : str, pl_pivot : float, year
 def get_daily_factor(city : str, date : str, pl_pivot : float, years : int = 10) -> pd.DataFrame:
     mean_plt = daily_mean_precipitation_on_x_years(city, date, years)
     mean_plt['facteur'] = (pl_pivot - mean_plt['Moyenne_Precipitation_Pondérée']) / pl_pivot
+    mean_plt['facteur'] = mean_plt['facteur'].apply(lambda x: max(x, 0))
     return mean_plt
 
 # print(get_daily_factor('Nice', '2014-01-01', 2))
+
+
+# Calcul du facteur et des probas en 1 seul fois
+def get_daily_factor_and_proba(city: str, date: str, pl_pivot: float, years: int = 10) -> pd.DataFrame:
+    df = get_precipitation_x_years_ago(city, date, years)
+    
+    # Prétraitement
+    df['MM-DD'] = df['Date'].str[5:]
+    df['Année'] = df['Date'].str[:4].astype(int)
+    
+    min_year = df['Année'].min()
+    df['Poids'] = np.log(df['Année'] - min_year + 1) + 1  # Calcul direct
+    
+    # Regroupement pour le poids pondéré
+    poids_values = df.groupby('MM-DD').agg(
+        Somme_Poids=('Précipitation', lambda x: np.dot(x, df.loc[x.index, 'Poids'])),
+        Total_Poids=('Poids', 'sum')
+    )
+    poids_values['Moyenne_Precipitation_Pondérée'] = (
+        poids_values['Somme_Poids'] / poids_values['Total_Poids']
+    )
+    
+    # Calcul des probabilités
+    proba_values = df.groupby('MM-DD')['Précipitation'].agg(**{
+        "Probabilité_plt_sup_pivot":lambda x: (x >= pl_pivot).sum() / years,
+        "Probabilité_0_inf_plt_pivot":lambda x: ((x > 0) & (x < pl_pivot)).sum() / years
+        }
+    )
+    
+    # Fusion des résultats
+    result = pd.merge(proba_values, poids_values['Moyenne_Precipitation_Pondérée'], on='MM-DD')
+    result['Probabilité_plt_eq_0'] = 1 - result['Probabilité_plt_sup_pivot'] - result['Probabilité_0_inf_plt_pivot']
+    result['facteur'] = ((pl_pivot - result['Moyenne_Precipitation_Pondérée']) / pl_pivot).clip(lower=0)
+    
+    cols = result.columns.tolist()
+    cols.remove('Moyenne_Precipitation_Pondérée')  # Retirer pour réinsérer à la bonne place
+    cols.insert(-1, 'Moyenne_Precipitation_Pondérée')  # Insérer avant la dernière colonne
+    result = result[cols]
+
+    return result.reset_index()
+
+# start_time = time.time()
+# print(get_daily_factor_and_proba('Nice','2014-01-01',10))
+# print(time.time() - start_time)
