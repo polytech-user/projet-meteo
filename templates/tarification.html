@@ -23,15 +23,11 @@
             
             <label for="pluviometrie">Niveau de pluviométrie journalier pivot (en mm)</label>
             <input type="number" id="pluviometrie" name="pluviometrie" placeholder="Entrez le niveau de pluviométrie" required step="0.1">
-            
-            <label for="date-souscription">Date de souscription</label>
-            <input type="date" id="date-souscription" name="date_souscription" required>
-            
             <label for="ville">Ville de localisation de votre commerce</label>
             <input type="hidden" name="ville_id" id="ville_id">
             <input type="text" id="ville_input" name="ville" placeholder="Entrez le nom de votre ville ou son code postal" autocomplete="off" required>
             <div id="autocomplete-results"></div>
-            
+            <input type="hidden" id="date_souscription" name="date_souscription">
             <button type="submit">Soumettre</button>
         </form>
         <button id="back-button">Retour à l'accueil</button>
@@ -47,5 +43,6 @@
 
     <script src="{{ url_for('static', filename='js/searchCities.js')}}"></script>
     <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
+    
 </body>
 </html>

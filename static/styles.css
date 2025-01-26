@@ -150,7 +150,6 @@ button:hover {
     margin-left: 30px;
     font-size: small;
    
-    
 }
 
 .autocomplete-item {
@@ -162,6 +161,14 @@ button:hover {
 
 .autocomplete-item:hover {
     background-color: #4b8295;
+}
+
+.result-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Sans Hatran', sans-serif;
 }
 
 

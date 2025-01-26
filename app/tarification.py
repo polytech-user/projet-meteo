@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from pluie import get_daily_factor_and_proba, get_precipitation_x_years_ago
 from calcul import R_plt_series
 
@@ -12,9 +13,14 @@ def client_result_expectation(city : str, date : str, CA : float, Cf : float, pl
     df_exp['Produit_3eme_ligne'] = (CA - Cf) * df_val_calcul['Probabilité_plt_eq_0']
     df_exp['Espérance'] = df_exp['Produit_1ere_ligne'] + df_exp['Produit_2eme_ligne'] + df_exp['Produit_3eme_ligne']
     total_expectation = df_exp['Espérance'].sum()
-    print(f"Espérance totale des résultats journaliers : {total_expectation}")
-    return df_exp
-# print(client_result_expectation('Nice','2014-01-01',200,100,10))
+    # print(f"Espérance totale des résultats journaliers : {total_expectation}")
+    negative_sum = df_exp[df_exp['Espérance'] < 0]['Espérance'].sum()
+    # print(f"Somme des espérances négatives : {negative_sum}")
+    return df_exp, total_expectation, negative_sum
+
+
+# df, _, _ = client_result_expectation('Marseille','2014-01-01',150,100,0.5)
+# print(df)
     
 
 # Méthode 2 : on calcule les résultats journaliers des x dernières années et on fait la moyenne
@@ -22,9 +28,48 @@ def client_result_average(city: str, date: str, CA: float, Cf: float, pl_pivot: 
     df_pluie = get_precipitation_x_years_ago(city, date, years)
     df_pluie['Résultat_jour'] = R_plt_series(CA, Cf, df_pluie['Précipitation'], pl_pivot)
     
-    return df_pluie
+    df_pluie['Année'] = df_pluie['Date'].str[:4].astype(int)
+    
+    annual_results = df_pluie.groupby('Année')['Résultat_jour'].sum().reset_index()
+    annual_results.columns = ['Année', 'Résultat']
+    
+    min_year = df_pluie['Année'].min()
+    annual_results['Poids'] = np.log(annual_results['Année'] - min_year + 1) + 1  # Poids logarithmiques
+    annual_results['Résultat_Pondéré'] = annual_results['Résultat'] * annual_results['Poids']
+    total_result_weighted_average = annual_results['Résultat_Pondéré'].sum() / annual_results['Poids'].sum()
+    annual_results['Moyenne_Pondérée'] = total_result_weighted_average
+    return annual_results, total_result_weighted_average
+    
+# print(client_result_average('Marseille', '2014-01-01', 150,100,0.5))
+    
 
-print(client_result_average('Nice','2014-01-01',200,100,2))
+#Méthode qu'on va utilisée pour le calcul de la prime
+def client_result_average_other_method(city: str, date: str, CA: float, Cf: float, pl_pivot: float, years: int = 10) -> pd.DataFrame:
+    df_pluie = get_precipitation_x_years_ago(city, date, years)
+    df_pluie['Résultat_jour'] = R_plt_series(CA, Cf, df_pluie['Précipitation'], pl_pivot)
+    
+    df_pluie['MM-DD'] = df_pluie['Date'].str[5:]
+    df_pluie['Année'] = df_pluie['Date'].str[:4].astype(int)
+    min_year = df_pluie['Année'].min()
+    df_pluie['Poids'] = np.log(df_pluie['Année'] - min_year + 1) + 1 # Poids logarithmiques
+    grouped = df_pluie.groupby('MM-DD').apply(
+        lambda group: pd.Series({
+            'Somme_Poids': np.sum(group['Résultat_jour'] * group['Poids']),
+            'Total_Poids': np.sum(group['Poids'])
+        })
+    ).reset_index()
+    
+    grouped['Moyenne_Résultat_Pondérée'] = grouped['Somme_Poids'] / grouped['Total_Poids']
+    result = grouped[['MM-DD', 'Moyenne_Résultat_Pondérée']]
+    total_res = result['Moyenne_Résultat_Pondérée'].sum()
+    # print(f"Somme des résultats journaliers : {total_res}")
+    negative_sum = result[result['Moyenne_Résultat_Pondérée'] < 0]['Moyenne_Résultat_Pondérée'].sum()
+    # print(f"Somme des résultats journaliers négatifs : {negative_sum}")
+    positive_sum = result[result['Moyenne_Résultat_Pondérée'] >= 0]['Moyenne_Résultat_Pondérée'].sum()
+    # print(f"Somme des résultats journaliers positifs : {positive_sum}")
+    return result, total_res, negative_sum, positive_sum
+
+# print(client_result_average_other_method('Marseille','2014-01-01',150,100,0.5))
 
     
     

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat de la Tarification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hatran&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="result-container">
+        <h2>Résultat de la Tarification</h2>
+        <p>La somme négative calculée est : {{ negative_sum }}</p>
+        <button onclick="window.location.href='/'">Retour à l'accueil</button>
+    </div>
+</body>
+</html>

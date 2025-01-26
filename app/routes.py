@@ -1,6 +1,8 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect, url_for, session
 from bp import routes
 from loader import Commune
+from tarification import client_result_average_other_method
+from datetime import datetime
 
 
 @routes.route('/')
@@ -11,13 +13,27 @@ def home():
 @routes.route('/tarification', methods=['GET', 'POST'])
 def tarification():
     if request.method == 'POST':
-        chiffre_affaire = request.form['chiffre_affaire']
-        couts_fixes = request.form['couts_fixes']
-        pluviometrie = request.form['pluviometrie']
-        date_souscription = request.form['date_souscription']
+        chiffre_affaire = float(request.form['chiffre_affaire'])
+        couts_fixes = float(request.form['couts_fixes'])
+        pluviometrie = float(request.form['pluviometrie'])
+        date_souscription = request.form.get(key=None, default=datetime.today().strftime('%Y-%m-%d'))
         ville = request.form['ville']
-        return render_template("tarification.html", message="Votre formulaire a bien été envoyé.")
+        
+        # Call the function with the parameters
+        _, _, negative_sum, _  = client_result_average_other_method(ville, date_souscription, chiffre_affaire, couts_fixes, pluviometrie)
+        
+        # Store the negative_sum in the session
+        session['negative_sum'] = negative_sum
+        
+        # Redirect to the result page without the negative_sum value in the URL
+        return redirect(url_for('routes.resultat'))
     return render_template("tarification.html")
+
+@routes.route('/resultat', methods=['GET', 'POST'])
+def resultat():
+    # Retrieve the negative_sum from the session
+    negative_sum = session.get('negative_sum')
+    return render_template('resultat.html', negative_sum=negative_sum)
         
 # Route pour l'auto-complétion des villes
 @routes.route('/autocomplete', methods=['GET'])

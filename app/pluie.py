@@ -157,5 +157,5 @@ def get_daily_factor_and_proba(city: str, date: str, pl_pivot: float, years: int
     return result.reset_index()
 
 # start_time = time.time()
-# print(get_daily_factor_and_proba('Nice','2014-01-01',10))
+# print(get_daily_factor_and_proba('Nice','2014-01-01',0.5))
 # print(time.time() - start_time)
