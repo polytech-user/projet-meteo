@@ -10,8 +10,16 @@
 <body>
     <div class="result-container">
         <h2>Résultat de la Tarification</h2>
-        <p>La somme négative calculée est : {{ negative_sum }}</p>
-        <button onclick="window.location.href='/'">Retour à l'accueil</button>
+        <p>La somme négative calculée est : {{ prime }}</p>
+        <button id="back-button">Retour à l'accueil</button>
     </div>
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p>Êtes-vous sûr de vouloir retourner à l'accueil ? Les données non sauvegardées seront perdues.</p>
+            <button id="confirm-back">Oui</button>
+            <button id="cancel-back">Non</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
 </body>
 </html>
