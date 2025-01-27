@@ -1,4 +1,5 @@
 import fitz
+from datetime import datetime
 
 
 def convertir_couleur(entier_couleur):
@@ -46,7 +47,7 @@ def detecter_style_et_fond(pdf_path, texte_cible, page_num=0):
     return style
 
 
-
+# print(detecter_style_et_fond("static/pdfs/devis_template.pdf","Antibes"))
 
 def remplacer_texte_stylise(pdf_path, sortie_path, ancien_texte, nouveau_texte):
     style = detecter_style_et_fond(pdf_path, ancien_texte)
@@ -113,8 +114,12 @@ def remplacer_texte_stylise_liste(pdf_path, sortie_path, ancien_texte, nouveau_t
         is_bold = "bold" in style["font"].lower()
         font_path = "fonts/" + "NotoSans-Bold" + ".ttf" if is_bold else "fonts/NotoSans-Regular.ttf" 
         font_name = font_path.split("/")[-1].split(".")[0]
+        print(font_name)
         
-        nouveau_point = fitz.Point(style["rect"].x0, style["rect"].y1 - 6)
+        new_width = fitz.get_text_length(new_text, fontsize=style['size'])
+        new_x0 = style['rect'].x1 - new_width - 10
+        
+        nouveau_point = fitz.Point(new_x0, style["rect"].y1 - 4.1)
         page.insert_text(
             nouveau_point,
             new_text,
@@ -124,7 +129,10 @@ def remplacer_texte_stylise_liste(pdf_path, sortie_path, ancien_texte, nouveau_t
             color=style["color"]
         )
     
+    
+    # timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M")
+    # sortie_path = f"static/pdfs/devis-{timestamp}.pdf"
     doc.save(sortie_path)
     print(f"PDF modifié enregistré sous : {sortie_path}")
     
-remplacer_texte_stylise_liste("pdf/devis_template.pdf","pdf/tempmod.pdf",["$123","492","dd-mm-aaaa"],["500€","500€","le 25/01/2025"])
+# remplacer_texte_stylise_liste("static/pdfs/devis_template.pdf","static/pdfs/devis.pdf",["$123","492","dd-mm-aaaa","Antibes", "1000 €", "700 €", "2 mm"],["500€","500€","le 25/01/2025","La zone", "1500 €", "150 €", "15 mm"])

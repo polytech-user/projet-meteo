@@ -10,8 +10,11 @@
 <body>
     <div class="result-container">
         <h2>Résultat de la Tarification</h2>
-        <p>La somme négative calculée est : {{ prime }}</p>
+        <p>La prime d'assurance est de : {{ negative_sum | abs }} €</p>
         <button id="back-button">Retour à l'accueil</button>
+        <form action="{{ url_for('routes.generate_quote') }}" method="get">
+            <button type="submit" id="generate-quote">Générer mon devis</button>
+        </form>
     </div>
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">

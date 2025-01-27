@@ -3,10 +3,11 @@ from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.resources import CDN
 from bokeh.models import ColumnDataSource, HoverTool
+import numpy as np
 from bp import routes
 from loader import Commune
 from tarification import client_result_average_other_method
-from pluie import get_precipitation
+from pdfmod import remplacer_texte_stylise_liste
 from datetime import datetime
 
 
@@ -18,18 +19,28 @@ def home():
 @routes.route('/tarification', methods=['GET', 'POST'])
 def tarification():
     if request.method == 'POST':
-        chiffre_affaire = float(request.form['chiffre_affaire'])
-        couts_fixes = float(request.form['couts_fixes'])
-        pluviometrie = float(request.form['pluviometrie'])
+        chiffre_affaire_str = request.form['chiffre_affaire']
+        couts_fixes_str = request.form['couts_fixes']
+        pluviometrie_str = request.form['pluviometrie']
+        chiffre_affaire = float(chiffre_affaire_str)
+        couts_fixes = float(couts_fixes_str)
+        pluviometrie = float(pluviometrie_str)
         
         today = str(datetime.today().date())
         ville = request.form['ville']
         
         # Call the function with the parameters
         _, _, negative_sum, _  = client_result_average_other_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
-        
+        negative_sum = np.round(negative_sum,2)
+        negative_sum_str = str(abs(negative_sum))
         # Store the negative_sum in the session
         session['negative_sum'] = negative_sum
+        session['prime'] = negative_sum_str
+        session['ville'] = ville
+        session['CA'] = chiffre_affaire_str
+        session['CF'] = couts_fixes_str
+        session['pluvio'] = pluviometrie_str
+        session['date'] = today
         
         # Redirect to the result page without the negative_sum value in the URL
         return redirect(url_for('routes.resultat'))
@@ -38,8 +49,8 @@ def tarification():
 @routes.route('/resultat', methods=['GET', 'POST'])
 def resultat():
     # Retrieve the negative_sum from the session
-    prime = session.get('res')
-    return render_template('resultat.html', prime=prime)
+    negative_sum = session.get('negative_sum')
+    return render_template('resultat.html', negative_sum=negative_sum)
         
 # Route pour l'auto-complétion des villes
 @routes.route('/autocomplete', methods=['GET'])
@@ -105,3 +116,21 @@ def test2():
         </body>
         </html>
     ''', script=script, div=div, resources=CDN.render())
+
+
+@routes.route('/view')
+def view_pdf():
+    return render_template('view_pdf.html', filename="devis.pdf")
+
+@routes.route('/generate_quote')
+def generate_quote():
+    prime = session.get('prime')
+    chiffre_affaire_str = session.get('CA')
+    couts_fixes_str = session.get('CF')
+    pluviometrie_str = session.get('pluvio')
+    ville = session.get('ville')
+    today = session.get('date')
+    year, month, day = today.split('-')
+    today = '/'.join([day,month,year])
+    remplacer_texte_stylise_liste("static/pdfs/devis_template.pdf","static/pdfs/devis.pdf",["$123","492","dd-mm-aaaa","Antibes", "1000 €", "700 €", "2 mm"],[prime + "€",prime + "€","le " + today,ville, chiffre_affaire_str + "€", couts_fixes_str + "€", pluviometrie_str + " mm"])
+    return redirect(url_for('routes.view_pdf'))

@@ -19,7 +19,7 @@ def get_precipitation(city : str, start_date : str , end_date : str) -> pd.DataF
         "end_date": end_date,
         "daily": "precipitation_sum",
     }
-    
+
     data = requests.get(url, params=params, headers=headers)
     
     if data.status_code == 200:
@@ -36,7 +36,7 @@ def get_precipitation(city : str, start_date : str , end_date : str) -> pd.DataF
         return None
     
     
-# print(get_precipitation("Nice","2025-01-01","2025-01-15"))
+# print(get_precipitation("Nice","2015-01-01","2025-01-15"))
 
 
 

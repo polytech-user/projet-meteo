@@ -26,7 +26,7 @@ def get_coordinates(city : str) -> tuple:
         name = data[0]["name"]
         return (lat, long), name
     else:
-        print(f"Erreur lors de la récupération des données : Erreur {response.status_code} - Raison : {response.reason}")
+        print(f"Erreur lors de la récupération des données de ville : Erreur {response.status_code} - Raison : {response.reason}")
         return None
     
 
