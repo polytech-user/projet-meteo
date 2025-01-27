@@ -2,6 +2,7 @@ from flask import render_template, request, jsonify, redirect, url_for, session
 from bp import routes
 from loader import Commune
 from tarification import client_result_average_other_method
+from pluie import get_precipitation
 from datetime import datetime
 
 
@@ -16,13 +17,15 @@ def tarification():
         chiffre_affaire = float(request.form['chiffre_affaire'])
         couts_fixes = float(request.form['couts_fixes'])
         pluviometrie = float(request.form['pluviometrie'])
-        date_souscription = request.form.get(key=None, default=datetime.today().strftime('%Y-%m-%d'))
+        
+        today = str(datetime.today().date())
         ville = request.form['ville']
         
         # Call the function with the parameters
-        _, _, negative_sum, _  = client_result_average_other_method(ville, date_souscription, chiffre_affaire, couts_fixes, pluviometrie)
+        _, _, negative_sum, _  = client_result_average_other_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
         
         # Store the negative_sum in the session
+        print(negative_sum)
         session['negative_sum'] = negative_sum
         
         # Redirect to the result page without the negative_sum value in the URL
