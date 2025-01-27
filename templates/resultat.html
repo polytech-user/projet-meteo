@@ -12,6 +12,9 @@
     <div class="result-container">
         <h2>Résultat de la Tarification</h2>
         <p>La prime d'assurance est de : {{ negative_sum | abs }} €</p>
+
+        <canvas id="weightedAverageChart" width="800" height="400"></canvas>
+
         <canvas id="precipitationChart" width="800" height="500"></canvas>
 
         <label for="period-select">Sélectionnez une période :</label>
@@ -22,10 +25,10 @@
 
         
         <form action="{{ url_for('routes.generate_quote') }}" method="get">
-            <button id="back-button">Retour à l'accueil</button>
+            
             <button type="submit" id="generate-quote">Générer mon devis</button>
         </form>
-        
+        <button id="back-button">Retour à l'accueil</button>
     </div>
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
@@ -36,9 +39,12 @@
     </div>
     <div id="flask-date" data-info='{{ dates|tojson|safe }}'></div>
     <div id="flask-pluie" data-info='{{ precipitations|tojson|safe }}'></div>
+    <div id="flask-days" data-info='{{ days|tojson|safe }}'></div>
+    <div id="flask-averages" data-info='{{ averages|tojson|safe }}'></div>
+
     <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
 
     <script src="{{ url_for('static', filename='js/precipChart.js') }}" type="module"></script>
-
+    <script src="{{ url_for('static', filename='js/weightedAverageChart.js') }}" type="module"></script>
 </body>
 </html>

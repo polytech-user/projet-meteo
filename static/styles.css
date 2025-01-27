@@ -164,11 +164,13 @@ button:hover {
 }
 
 .result-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Noto Sans Hatran', sans-serif;
+    width: 90%; /* Largeur du conteneur */
+    max-width: 900px; /* Largeur maximale */
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    border-radius: 8px; /* Coins arrondis */
+    overflow-y: auto; /* Ajouter un défilement vertical si nécessaire */
 }
 
 #period-select {

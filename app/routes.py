@@ -1,5 +1,6 @@
 from flask import render_template, request, jsonify, redirect, url_for, session, render_template_string
 import numpy as np
+import pandas as pd
 from bp import routes
 from loader import Commune
 from tarification import client_result_average_other_method
@@ -31,6 +32,8 @@ def tarification():
         _, _, negative_sum, _  = client_result_average_other_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
         negative_sum = np.round(negative_sum,2)
         negative_sum_str = str(abs(negative_sum))
+        
+        
         # Store the negative_sum in the session
         session['negative_sum'] = negative_sum
         session['prime_str'] = negative_sum_str
@@ -40,6 +43,7 @@ def tarification():
         session['pluvio_str'] = pluviometrie_str
         session['date'] = today
         
+        
         # Redirect to the result page without the negative_sum value in the URL
         return redirect(url_for('routes.resultat'))
     return render_template("tarification.html")
@@ -48,15 +52,25 @@ def tarification():
 def resultat():
     # Retrieve the negative_sum from the session
     negative_sum = session.get('negative_sum')
-    
     ville = session.get('ville')
     today = session.get('date')
     df = get_precipitation_x_years_ago(ville, today)
     dates = df['Date'].tolist()
     precipitations = df['Précipitation'].tolist()
     precipitations = [p if not np.isnan(p) else 0.0 for p in precipitations]
-    
-    return render_template('resultat.html', negative_sum=negative_sum, precipitations=precipitations, dates = dates)
+    chiffre_affaire_str = session.get('CA_str')
+    couts_fixes_str = session.get('CF_str')
+    pluviometrie_str = session.get('pluvio_str')
+    chiffre_affaire = float(chiffre_affaire_str)
+    couts_fixes = float(couts_fixes_str)
+    pluviometrie = float(pluviometrie_str)
+    data, _, _, _ = client_result_average_other_method(ville,today,chiffre_affaire,couts_fixes,pluviometrie)
+    days = data['MM-DD'].tolist()
+    averages = data['Moyenne_Résultat_Pondérée'].tolist()
+    averages = [round(avg, 2) for avg in averages]
+    print(averages)
+        
+    return render_template('resultat.html', negative_sum=negative_sum, precipitations=precipitations, dates = dates, days=days, averages=averages)
         
 # Route pour l'auto-complétion des villes
 @routes.route('/autocomplete', methods=['GET'])
