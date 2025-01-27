@@ -1,4 +1,8 @@
-from flask import render_template, request, jsonify, redirect, url_for, session
+from flask import render_template, request, jsonify, redirect, url_for, session, render_template_string
+from bokeh.plotting import figure
+from bokeh.embed import components
+from bokeh.resources import CDN
+from bokeh.models import ColumnDataSource, HoverTool
 from bp import routes
 from loader import Commune
 from tarification import client_result_average_other_method
@@ -25,7 +29,6 @@ def tarification():
         _, _, negative_sum, _  = client_result_average_other_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
         
         # Store the negative_sum in the session
-        print(negative_sum)
         session['negative_sum'] = negative_sum
         
         # Redirect to the result page without the negative_sum value in the URL
@@ -35,8 +38,8 @@ def tarification():
 @routes.route('/resultat', methods=['GET', 'POST'])
 def resultat():
     # Retrieve the negative_sum from the session
-    negative_sum = session.get('negative_sum')
-    return render_template('resultat.html', negative_sum=negative_sum)
+    prime = session.get('res')
+    return render_template('resultat.html', prime=prime)
         
 # Route pour l'auto-complétion des villes
 @routes.route('/autocomplete', methods=['GET'])
@@ -55,7 +58,50 @@ def autocomplete():
     return jsonify([])  # Si rien n'est tapé, retourner une liste vide
 
 
-@routes.route('/test',methods=['GET', 'POST'])
-def test():
-    return render_template('testSearchCities.html')
+    
+@routes.route('/test2')
+def test2():
+    # Données pour la courbe
+    x = [1, 2, 3, 4, 5]
+    y = [6, 7, 2, 4, 5]
+    labels = ["Point A", "Point B", "Point C", "Point D", "Point E"]
+    
+    source = ColumnDataSource(data={
+        'x': x,
+        'y': y,
+        'label' : labels
+    })
+    
+    # Création du graphique avec Bokeh
+    plot = figure(title="Courbe interactive avec HoverTool",
+                  x_axis_label='X-axis',
+                  y_axis_label='Y-axis',
+                  width=700, height=400)
+    plot.line('x', 'y', source=source, legend_label="Ligne", line_width=2, color="blue")
+    plot.circle('x', 'y', source=source, size=10, color="red")
+    
+    hover = HoverTool(tooltips=[
+        ("","X: @x, Y: @y"),
+        ("", "Point : @label")
+        
+    ], mode="vline")
+    plot.add_tools(hover)
+    
+    # Convertir le graphique en composants HTML
+    script, div = components(plot)
 
+    # Rendu dans une page HTML
+    return render_template_string('''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Graphique Bokeh</title>
+            {{ resources|safe }}
+        </head>
+        <body>
+            <h1>Graphique interactif avec Bokeh</h1>
+            {{ div|safe }}
+            {{ script|safe }}
+        </body>
+        </html>
+    ''', script=script, div=div, resources=CDN.render())
