@@ -35,11 +35,11 @@ def tarification():
         negative_sum_str = str(abs(negative_sum))
         # Store the negative_sum in the session
         session['negative_sum'] = negative_sum
-        session['prime'] = negative_sum_str
+        session['prime_str'] = negative_sum_str
         session['ville'] = ville
-        session['CA'] = chiffre_affaire_str
-        session['CF'] = couts_fixes_str
-        session['pluvio'] = pluviometrie_str
+        session['CA_str'] = chiffre_affaire_str
+        session['CF_str'] = couts_fixes_str
+        session['pluvio_str'] = pluviometrie_str
         session['date'] = today
         
         # Redirect to the result page without the negative_sum value in the URL
@@ -124,10 +124,10 @@ def view_pdf():
 
 @routes.route('/generate_quote')
 def generate_quote():
-    prime = session.get('prime')
-    chiffre_affaire_str = session.get('CA')
-    couts_fixes_str = session.get('CF')
-    pluviometrie_str = session.get('pluvio')
+    prime = session.get('prime_str')
+    chiffre_affaire_str = session.get('CA_str')
+    couts_fixes_str = session.get('CF_str')
+    pluviometrie_str = session.get('pluvio_str.')
     ville = session.get('ville')
     today = session.get('date')
     year, month, day = today.split('-')

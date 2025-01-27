@@ -114,12 +114,14 @@ def remplacer_texte_stylise_liste(pdf_path, sortie_path, ancien_texte, nouveau_t
         is_bold = "bold" in style["font"].lower()
         font_path = "fonts/" + "NotoSans-Bold" + ".ttf" if is_bold else "fonts/NotoSans-Regular.ttf" 
         font_name = font_path.split("/")[-1].split(".")[0]
-        print(font_name)
+        
         
         new_width = fitz.get_text_length(new_text, fontsize=style['size'])
         new_x0 = style['rect'].x1 - new_width - 10
         
-        nouveau_point = fitz.Point(new_x0, style["rect"].y1 - 4.1)
+        new_y = style["rect"].y1 - 0.25*style['size']
+        
+        nouveau_point = fitz.Point(new_x0, new_y)
         page.insert_text(
             nouveau_point,
             new_text,
