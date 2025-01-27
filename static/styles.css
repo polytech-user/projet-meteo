@@ -171,4 +171,10 @@ button:hover {
     font-family: 'Noto Sans Hatran', sans-serif;
 }
 
+#period-select {
+    margin-top: 20px;
+    padding: 5px;
+    font-size: 16px;
+}
+
 

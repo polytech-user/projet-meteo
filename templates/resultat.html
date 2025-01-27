@@ -6,15 +6,26 @@
     <title>Résultat de la Tarification</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hatran&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="result-container">
         <h2>Résultat de la Tarification</h2>
         <p>La prime d'assurance est de : {{ negative_sum | abs }} €</p>
-        <button id="back-button">Retour à l'accueil</button>
+        <canvas id="precipitationChart" width="800" height="500"></canvas>
+
+        <label for="period-select">Sélectionnez une période :</label>
+        <select id="period-select">
+        
+        <!-- Les options seront générées dynamiquement par JavaScript -->
+        </select>
+
+        
         <form action="{{ url_for('routes.generate_quote') }}" method="get">
+            <button id="back-button">Retour à l'accueil</button>
             <button type="submit" id="generate-quote">Générer mon devis</button>
         </form>
+        
     </div>
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
@@ -23,6 +34,11 @@
             <button id="cancel-back">Non</button>
         </div>
     </div>
+    <div id="flask-date" data-info='{{ dates|tojson|safe }}'></div>
+    <div id="flask-pluie" data-info='{{ precipitations|tojson|safe }}'></div>
     <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
+
+    <script src="{{ url_for('static', filename='js/precipChart.js') }}" type="module"></script>
+
 </body>
 </html>
