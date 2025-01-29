@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-from pluie import get_daily_factor_and_proba, get_precipitation_x_years_ago
-from calcul import R_plt_series
+from pluie import get_daily_factor_and_proba, get_precipitation_x_years_ago, get_precipitation_x_years_ago_np
+from calcul import R_plt_series, R_plt
 
 
 # Méthode 1 : en utilisant les probabilités et en calculant l'espérance du résultat journalier du commmerce du client
@@ -70,6 +70,17 @@ def client_result_average_other_method(city: str, date: str, CA: float, Cf: floa
     return result, total_res, negative_sum, positive_sum
 
 # print(client_result_average_other_method('Marseille','2014-01-01',150,100,0.5))
-
     
     
+def client_result_average_best_method(city: str, date: str, CA: float, Cf: float, pl_pivot: float, years: int = 10):
+    dates, precipitations = get_precipitation_x_years_ago_np(city, date, years)
+    R_plt_vectorized = np.vectorize(R_plt)
+    liste_resultats_on_x_years = R_plt_vectorized(CA, Cf, precipitations, pl_pivot)
+    total_negative_results = np.sum(liste_resultats_on_x_years[liste_resultats_on_x_years < 0])
+    prime = total_negative_results / years
+    return abs(prime)
+    
+    
+    
+    
+# print(client_result_average_best_method('Nice','2025-01-01',1000,100,10))

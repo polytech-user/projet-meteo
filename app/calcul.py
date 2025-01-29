@@ -43,7 +43,7 @@ def R_plt(CA : float, Cf : float, plt : float, pl_pivot : float) -> float:
     elif plt == 0:
         return CA - Cf
     
-    import numpy as np
+    
 
 def R_plt_series(CA: float, Cf: float, plt: pd.Series, pl_pivot: float) -> pd.Series:
     """

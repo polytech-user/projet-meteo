@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 from bp import routes
 from loader import Commune
-from tarification import client_result_average_other_method
+from tarification import client_result_average_other_method, client_result_average_best_method
 from pdfmod import remplacer_texte_stylise_liste
-from pluie import get_precipitation_x_years_ago
+from pluie import get_precipitation_x_years_ago, get_precipitation_x_years_ago_np
 from datetime import datetime
 
 
@@ -29,14 +29,12 @@ def tarification():
         ville = request.form['ville']
         
         # Call the function with the parameters
-        _, _, negative_sum, _  = client_result_average_other_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
-        negative_sum = np.round(negative_sum,2)
-        negative_sum_str = str(abs(negative_sum))
-        
+        prime = client_result_average_best_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
+        prime_str = str(prime)
         
         # Store the negative_sum in the session
-        session['negative_sum'] = negative_sum
-        session['prime_str'] = negative_sum_str
+        session['prime'] = prime
+        session['prime_str'] = prime_str
         session['ville'] = ville
         session['CA_str'] = chiffre_affaire_str
         session['CF_str'] = couts_fixes_str
@@ -51,26 +49,19 @@ def tarification():
 @routes.route('/resultat', methods=['GET', 'POST'])
 def resultat():
     # Retrieve the negative_sum from the session
-    negative_sum = session.get('negative_sum')
+    prime = session.get('prime')
     ville = session.get('ville')
     today = session.get('date')
-    df = get_precipitation_x_years_ago(ville, today)
-    dates = df['Date'].tolist()
-    precipitations = df['Précipitation'].tolist()
+    
+    # dates = df['Date'].tolist()
+    # precipitations = df['Précipitation'].tolist()
+    dates, precipitations = get_precipitation_x_years_ago_np(ville,today)
+    dates = dates.tolist()
+    precipitations = precipitations.tolist()
     precipitations = [p if not np.isnan(p) else 0.0 for p in precipitations]
-    chiffre_affaire_str = session.get('CA_str')
-    couts_fixes_str = session.get('CF_str')
-    pluviometrie_str = session.get('pluvio_str')
-    chiffre_affaire = float(chiffre_affaire_str)
-    couts_fixes = float(couts_fixes_str)
-    pluviometrie = float(pluviometrie_str)
-    data, _, _, _ = client_result_average_other_method(ville,today,chiffre_affaire,couts_fixes,pluviometrie)
-    days = data['MM-DD'].tolist()
-    averages = data['Moyenne_Résultat_Pondérée'].tolist()
-    averages = [round(avg, 2) for avg in averages]
-    print(averages)
-        
-    return render_template('resultat.html', negative_sum=negative_sum, precipitations=precipitations, dates = dates, days=days, averages=averages)
+    
+            
+    return render_template('resultat.html', negative_sum=prime, precipitations=precipitations, dates = dates)
         
 # Route pour l'auto-complétion des villes
 @routes.route('/autocomplete', methods=['GET'])

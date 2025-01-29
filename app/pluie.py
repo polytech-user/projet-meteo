@@ -38,6 +38,31 @@ def get_precipitation(city : str, start_date : str , end_date : str) -> pd.DataF
     
 # print(get_precipitation("Nice","2015-01-01","2025-01-15"))
 
+def get_precipitation_np(city: str, start_date: str, end_date: str) -> tuple[np.ndarray, np.ndarray]:
+    # Récupération des coordonnées de la ville nécessaires à la requête météo
+    (lat, long), _ = get_coordinates(city)
+
+    params = {
+        "latitude": lat,
+        "longitude": long,
+        "start_date": start_date,
+        "end_date": end_date,
+        "daily": "precipitation_sum",
+    }
+
+    data = requests.get(url, params=params, headers=headers)
+
+    if data.status_code == 200:
+        data = data.json()
+        dates = np.array(data["daily"]["time"])
+        precipitations = np.array(data["daily"]["precipitation_sum"], dtype=np.float64)
+        return dates, precipitations
+    else:
+        print(f"Erreur dans la récupération des données des précipitations : Erreur {data.status_code} - Raison : {data.reason}")
+        return None, None
+
+
+
 
 
 # Obtenir les valeurs des précipitations depuis x années
@@ -50,7 +75,6 @@ def get_precipitation_x_years_ago(city : str, date : str, years : int = 10) -> p
     
     return df
     
-
 # df = get_precipitation_x_years_ago('Nice','2014-01-01')
 # df_jan_1 = df[df['Date'].str.endswith('01-01')].head(11)
 # print(df_jan_1)
@@ -58,6 +82,25 @@ def get_precipitation_x_years_ago(city : str, date : str, years : int = 10) -> p
 # print(df.loc[df['Date'] == '2019-11-23'])
 # max_precipitation_date = df.loc[df['Date'].idxmax(), 'Date']
 # print(f"La date associée à la précipitation maximale est : {max_precipitation_date}")
+
+
+
+
+
+
+def get_precipitation_x_years_ago_np(city: str, date: str, years: int = 10) -> tuple[np.ndarray, np.ndarray]:
+    year, month, day = date.split('-')
+    year = str(int(year) - years)
+    start_date = '-'.join([year, month, day])
+
+    dates, precipitations = get_precipitation_np(city, start_date, date)
+    return dates, precipitations
+
+
+
+
+
+
 
 
 # Calcule la moyenne pondérée des précipitations journalières sur x années (les années récentes ont plus de poids)
