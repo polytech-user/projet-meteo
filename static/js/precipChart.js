@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         precipitationChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: filteredDates,
                 datasets: [{
-                    label: 'Précipitations (mm)',
+                    label: 'Précipitations',
                     data: filteredPrecipitations,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -55,7 +55,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         beginAtZero: true
                     },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        title : {
+                            display: true,
+                            text: 'Précipitations en mm',
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        }
                     }
                 }
             }
@@ -63,12 +71,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Générer les options pour le sélecteur de période
+    // Générer les options pour le sélecteur de période
     const periodSelect = document.getElementById('period-select');
     const uniqueYears = [...new Set(dates.map(date => date.split('-')[0]))]; // Extraire les années uniques
 
     uniqueYears.forEach(year => {
         const startDate = `${year}-01-01`;
-        const endDate = `${parseInt(year) + 1}-01-01`;
+        let endDate;
+
+        // Si l'année est 2025, définir la date de fin comme la date du jour
+        if (year === '2025') {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+            const day = String(today.getDate()).padStart(2, '0');
+            endDate = `${year}-${month}-${day}`;
+        } else {
+            endDate = `${parseInt(year) + 1}-01-01`;
+        }
+
         const option = document.createElement('option');
         option.value = `${startDate}_${endDate}`;
         option.textContent = `${startDate} à ${endDate}`;

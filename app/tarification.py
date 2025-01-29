@@ -78,6 +78,7 @@ def client_result_average_best_method(city: str, date: str, CA: float, Cf: float
     liste_resultats_on_x_years = R_plt_vectorized(CA, Cf, precipitations, pl_pivot)
     total_negative_results = np.sum(liste_resultats_on_x_years[liste_resultats_on_x_years < 0])
     prime = total_negative_results / years
+    prime = np.round(prime,2)
     return abs(prime)
     
     
