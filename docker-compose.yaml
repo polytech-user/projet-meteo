@@ -13,6 +13,7 @@ services:
       db:
         condition: service_healthy
 
+
   db:
     image: postgres:16
     environment:
@@ -21,7 +22,7 @@ services:
       POSTGRES_DB: flask_app_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U flask_app_user -d flask_app_db"]
-      interval: 5s
+      interval: 2s
       timeout: 3s
       retries: 2
     volumes:

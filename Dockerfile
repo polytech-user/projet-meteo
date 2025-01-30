@@ -14,12 +14,12 @@ COPY . .
 
 # Variables d'environnement Flask
 ENV FLASK_APP=app/loader.py
-ENV FLASK_ENV=production
+
 
 # Exécution des migrations (si vous utilisez Flask-Migrate)
 # RUN flask db upgrade
 
-EXPOSE 5000
 
 # Commande de démarrage
 CMD ["python", "app/run.py"]
+
