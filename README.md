@@ -62,5 +62,9 @@ Une fois les conteneurs lancés, rendez vous sur votre navigateur et entrez l'ad
   localhost:5000
   ```
 
+Pour stopper l'application proprement, placez vous à la racine du projet et exécutez la commande suivante :
+```bash
+docker-compose down -v --remove-orphans
+```
 
 
