@@ -21,20 +21,20 @@ N.B : Sous Windows, l'installation de Docker Desktop entraîne automatiquement l
 
 Le projet est structuré ainsi : 
 
-  projet-meteo/
-  ├── app/
-  │   └── ...
-  ├── fonts/
-  │   └── ...
-  ├── static/
-  │    └── ...
-  ├── templates/
-  │   └── ...
-  ├── .env  
-  ├── Dockerfile
-  ├── docker-compose.yml
-  ├── README.md
-  └── requirements.txt
+  projet-meteo/  
+  ├── app/  
+  │   └── ...  
+  ├── fonts/  
+  │   └── ...  
+  ├── static/  
+  │    └── ...  
+  ├── templates/  
+  │   └── ...  
+  ├── .env    
+  ├── Dockerfile  
+  ├── docker-compose.yml  
+  ├── README.md  
+  └── requirements.txt  
 
 Dans un terminal, placez vous à la racine du projet :
 - Sous Windows :
