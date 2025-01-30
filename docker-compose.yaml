@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app  # Montage du code en développement
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: flask_app_user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: flask_app_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flask_app_user -d flask_app_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 2
+    volumes:
+      - ./flask_app_db_backup.sql:/docker-entrypoint-initdb.d/flask_app_db_backup.sql
+      - postgres_data:/var/lib/postgresql/data
+      
+
+volumes:
+  postgres_data:

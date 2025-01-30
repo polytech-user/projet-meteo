@@ -1,4 +1,4 @@
-import fitz
+import pymupdf
 from datetime import datetime
 
 
@@ -16,7 +16,7 @@ def convertir_couleur(entier_couleur):
 
 def detecter_style_et_fond(pdf_path, texte_cible, page_num=0):
     """Détecte le style (police, taille, couleur) et le fond autour du texte."""
-    doc = fitz.open(pdf_path)
+    doc = pymupdf.open(pdf_path)
     page = doc[page_num]
     style = {}
     
@@ -32,7 +32,7 @@ def detecter_style_et_fond(pdf_path, texte_cible, page_num=0):
                             "font": span["font"],
                             "size": span["size"],
                             "color": (r,g,b),
-                            "rect": fitz.Rect(span["bbox"])
+                            "rect": pymupdf.Rect(span["bbox"])
                             
                         }
                         break
@@ -54,7 +54,7 @@ def remplacer_texte_stylise(pdf_path, sortie_path, ancien_texte, nouveau_texte):
     if not style:
         raise ValueError("Texte non trouvé ou style non détecté.")
     
-    doc = fitz.open(pdf_path)
+    doc = pymupdf.open(pdf_path)
     page = doc[0]
     
     # Remplacer en masquant avec la couleur de fond
@@ -66,7 +66,7 @@ def remplacer_texte_stylise(pdf_path, sortie_path, ancien_texte, nouveau_texte):
     font_path = "fonts/" + "NotoSans-Bold" + ".ttf" if is_bold else "fonts/NotoSans-Regular.ttf" 
     font_name = font_path.split("/")[-1].split(".")[0]
     # Insérer le nouveau texte avec le style original
-    nouveau_point = fitz.Point(style["rect"].x0, style["rect"].y1 - 2)
+    nouveau_point = pymupdf.Point(style["rect"].x0, style["rect"].y1 - 2)
     page.insert_text(
         nouveau_point,
         nouveau_texte,
@@ -93,7 +93,7 @@ def remplacer_texte_stylise_liste(pdf_path, sortie_path, ancien_texte, nouveau_t
     if len(ancien_texte) != len(nouveau_texte):
         raise ValueError("ancien_texte et nouveau_texte doivent être de même taille.")
     
-    doc = fitz.open(pdf_path)
+    doc = pymupdf.open(pdf_path)
     page = doc[0]
     styles = []
 
@@ -116,12 +116,12 @@ def remplacer_texte_stylise_liste(pdf_path, sortie_path, ancien_texte, nouveau_t
         font_name = font_path.split("/")[-1].split(".")[0]
         
         
-        new_width = fitz.get_text_length(new_text, fontsize=style['size'])
+        new_width = pymupdf.get_text_length(new_text, fontsize=style['size'])
         new_x0 = style['rect'].x1 - new_width - 10
         
         new_y = style["rect"].y1 - 0.25*style['size']
         
-        nouveau_point = fitz.Point(new_x0, new_y)
+        nouveau_point = pymupdf.Point(new_x0, new_y)
         page.insert_text(
             nouveau_point,
             new_text,
