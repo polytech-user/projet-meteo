@@ -11,7 +11,7 @@ Développée avec Flask et PostgreSQL, conteneurisée via Docker.
 
 ## Prérequis
 
-Avant de commencer, assurez-vous d'avoir installé :<br>
+Avant de commencer, assurez-vous d'avoir installé :<br><br><br><br><br>
 - 🐳 [Docker](https://docs.docker.com/get-docker/) 
 - 🐙 [Docker Compose](https://docs.docker.com/compose/install/)
 
