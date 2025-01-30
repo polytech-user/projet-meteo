@@ -40,7 +40,9 @@ Le projet est structuré ainsi :
 Dans un premier temps, clonez le repo :
   ```bash
   git clone https://github.com/polytech-user/projet-meteo.git
+  ```
 
+<br>
 
 Dans un terminal, placez vous à la racine du projet :
 - Sous Windows :
