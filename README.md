@@ -39,7 +39,11 @@ Le projet est structuré ainsi :
 Dans un terminal, placez vous à la racine du projet :
 - Sous Windows :
     ```powershell
-    cd
+    cd C:\chemin\vers\projet-meteo
+
+- Sous Linux :
+    ```bash
+    cd chemin/vers/projet-meteo
 
 
 
