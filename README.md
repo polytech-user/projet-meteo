@@ -7,12 +7,14 @@ Développée avec Flask et PostgreSQL, conteneurisée via Docker.
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
-![AdBlock Badge](https://img.shields.io/badge/AdBlock-F40D12?logo=adblock&logoColor=fff&style=for-the-badge)
+
 
 ## Prérequis
 
 - 🐳 [Docker](https://docs.docker.com/get-docker/) 
 - 🐙 [Docker Compose](https://docs.docker.com/compose/install/)
+
+
 
 
 
