@@ -45,6 +45,11 @@ Dans un terminal, placez vous à la racine du projet :
     ```bash
     cd chemin/vers/projet-meteo
 
+Lancez l'application avec cette commande :
+```
+docker-compose up --build -d
+
+
 
 
 
