@@ -40,15 +40,17 @@ Dans un terminal, placez vous à la racine du projet :
 - Sous Windows :
     ```powershell
     cd C:\chemin\vers\projet-meteo
+    ```
 
 - Sous Linux :
     ```bash
     cd chemin/vers/projet-meteo
+    ```
 
 Lancez l'application avec cette commande :
-```
+```bash
 docker-compose up --build -d
-
+```
 
 
 
