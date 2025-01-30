@@ -35,7 +35,7 @@ Le projet est structuré ainsi :
   ├── docker-compose.yml  
   ├── README.md  
   └── requirements.txt  
-
+<br>
 Dans un terminal, placez vous à la racine du projet :
 - Sous Windows :
     ```powershell
@@ -46,12 +46,21 @@ Dans un terminal, placez vous à la racine du projet :
     ```bash
     cd chemin/vers/projet-meteo
     ```
+<br>
+Lancez les conteneurs avec cette commande :
 
-Lancez l'application avec cette commande :
-```bash
-docker-compose up --build -d
-```
+  ```bash
+  docker-compose up --build -d
+  ```
 
+<br>
+
+## Utilisation
+
+Une fois les conteneurs lancés, rendez vous sur votre navigateur et entrez l'adresse suivante :
+  ```url
+  localhost:5000
+  ```
 
 
 
