@@ -11,7 +11,7 @@ Développée avec Flask et PostgreSQL, conteneurisée via Docker.
 
 ## Prérequis
 
-Avant de commencer, assurez-vous d'avoir installé :<br><br><br><br><br>
+Avant de commencer, assurez-vous d'avoir installé :
 - 🐳 [Docker](https://docs.docker.com/get-docker/) 
 - 🐙 [Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -23,13 +23,13 @@ Le projet est structuré ainsi :
 
   projet-meteo/  
   ├── app/  
-  │   └── ...  
+  │     └── ...  
   ├── fonts/  
-  │   └── ...  
+  │     └── ...  
   ├── static/  
-  │    └── ...  
+  │      └── ...  
   ├── templates/  
-  │   └── ...  
+  │     └── ...  
   ├── .env    
   ├── Dockerfile  
   ├── docker-compose.yml  
