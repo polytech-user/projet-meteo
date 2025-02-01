@@ -2,6 +2,8 @@ const dates_ele = document.getElementById('flask-date');
 const precipitations_ele = document.getElementById('flask-pluie');
 const dates = JSON.parse(dates_ele.dataset.info);
 const precipitations = JSON.parse(precipitations_ele.dataset.info);
+const averagesElement = document.getElementById('flask-averages');
+const averages = JSON.parse(averagesElement.dataset.info);
 
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('precipitationChart').getContext('2d');
@@ -18,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: filteredDates,
                 datasets: [{
-                    label: 'Précipitations',
+                    label: 'Précipitations en mm',
                     data: filteredPrecipitations,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -113,6 +115,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Créer le graphique initial avec les données de la première période
     createChart(initialFilteredData.dates, initialFilteredData.precipitations);
 
+
+    document.getElementById('average-value').textContent = `La moyenne annuelle des précipitations est de ${averages[0].toFixed(2)} mm`;
     // Définir la valeur du sélecteur sur la première période
     periodSelect.value = `${firstStartDate}_${firstEndDate}`;
 
@@ -135,6 +139,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }, { dates: [], precipitations: [] });
 
             createChart(filteredData.dates, filteredData.precipitations);
+
+            const selectedIndex = periodSelect.selectedIndex;
+            document.getElementById('average-value').textContent = `La moyenne annuelle des précipitations est de ${averages[selectedIndex].toFixed(2)} mm`;
         }
     });
 });

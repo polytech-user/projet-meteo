@@ -99,9 +99,32 @@ def get_precipitation_x_years_ago_np(city: str, date: str, years: int = 10) -> t
 
 
 
+def average_annual_precipitation(city: str, date: str, years: int = 10) -> list[float]:
+    dates, precipitations = get_precipitation_x_years_ago_np(city, date, years)
+    
+    if dates is None or precipitations is None:
+        return None
+    
+    # Convert dates to years
+    years_array = np.array([int(d.split('-')[0]) for d in dates])
+    
+    # Calculate total precipitation per year
+    unique_years = np.unique(years_array)
+    
+    total_precipitation_per_year = [np.nansum(precipitations[years_array == year]) for year in unique_years]
+    # Calculate average annual precipitation for each year
+    average_precipitation_per_year = [
+        total / len(precipitations[years_array == year]) 
+        for total, year in zip(total_precipitation_per_year, unique_years) 
+        if year < int(date.split('-')[0])
+    ]
+    average_precipitation_per_year.append(total_precipitation_per_year[-1]/(len(precipitations[years_array == unique_years[-1]]) - 2))
+    
+    average_precipitation_per_year_float = [float(p) for p in average_precipitation_per_year]
+    
+    return dates, precipitations, average_precipitation_per_year_float
 
-
-
+# print(average_annual_precipitation("Brest", '2025-02-01'))
 
 # Calcule la moyenne pondérée des précipitations journalières sur x années (les années récentes ont plus de poids)
 def daily_mean_precipitation_on_x_years(city : str, date: str, years: int = 10) -> pd.DataFrame:

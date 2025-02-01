@@ -16,13 +16,14 @@
         <!-- <canvas id="weightedAverageChart" width="800" height="400"></canvas> -->
 
         <canvas id="precipitationChart" width="800" height="500"></canvas>
-
+        <span id="average-value" class="text-blue-600" style="padding-right: 400px;"><!-- JS remplira cette valeur --></span>
+        <br><br>
         <label for="period-select">Sélectionnez une période :</label>
         <select id="period-select">
         
         <!-- Les options seront générées dynamiquement par JavaScript -->
         </select>
-
+        
         
         <form action="{{ url_for('routes.generate_quote') }}" method="get">
             
@@ -39,6 +40,7 @@
     </div>
     <div id="flask-date" data-info='{{ dates|tojson|safe }}'></div>
     <div id="flask-pluie" data-info='{{ precipitations|tojson|safe }}'></div>
+    <div id="flask-averages" data-info="{{ averages|tojson|safe }}"></div>
     
 
     <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>

@@ -5,7 +5,7 @@ from bp import routes
 from loader import Commune
 from tarification import client_result_average_other_method, client_result_average_best_method
 from pdfmod import remplacer_texte_stylise_liste
-from pluie import get_precipitation_x_years_ago, get_precipitation_x_years_ago_np
+from pluie import get_precipitation_x_years_ago_np, average_annual_precipitation
 from datetime import datetime
 
 
@@ -32,7 +32,7 @@ def tarification():
         prime = client_result_average_best_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
         prime_str = str(prime)
         
-        # Store the negative_sum in the session
+        # Stocke les valeurs en str pour le devis
         session['prime'] = prime
         session['prime_str'] = prime_str
         session['ville'] = ville
@@ -55,13 +55,13 @@ def resultat():
     
     # dates = df['Date'].tolist()
     # precipitations = df['Précipitation'].tolist()
-    dates, precipitations = get_precipitation_x_years_ago_np(ville,today)
+    dates, precipitations, averages = average_annual_precipitation(ville,today)
     dates = dates.tolist()
     precipitations = precipitations.tolist()
     precipitations = [p if not np.isnan(p) else 0.0 for p in precipitations]
-    
+   
             
-    return render_template('resultat.html', negative_sum=prime, precipitations=precipitations, dates = dates)
+    return render_template('resultat.html', negative_sum=prime, precipitations=precipitations, dates = dates, averages=averages)
         
 # Route pour l'auto-complétion des villes
 @routes.route('/autocomplete', methods=['GET'])
