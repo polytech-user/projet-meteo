@@ -76,12 +76,22 @@ def client_result_average_best_method(city: str, date: str, CA: float, Cf: float
     dates, precipitations = get_precipitation_x_years_ago_np(city, date, years)
     R_plt_vectorized = np.vectorize(R_plt)
     liste_resultats_on_x_years = R_plt_vectorized(CA, Cf, precipitations, pl_pivot)
+    total_positive_results = np.sum(liste_resultats_on_x_years[liste_resultats_on_x_years >= 0])
     total_negative_results = np.sum(liste_resultats_on_x_years[liste_resultats_on_x_years < 0])
+    total_result = (total_positive_results + total_negative_results) / years
+    positive_result = total_positive_results / years
     prime = total_negative_results / years
     prime = np.round(prime,2)
-    return abs(prime)
+    return abs(prime), positive_result, total_result, liste_resultats_on_x_years
     
     
     
     
 # print(client_result_average_best_method('Nice','2025-01-01',1000,100,10))
+
+# prime_pred_2020, pospred2020, totpred2020 = client_result_average_best_method('Nice','2023-12-31',1000,500,5)
+# primevraie2020, pos2020, tot2020 = client_result_average_best_method('Nice','2024-12-31',1000,500,5,1)
+
+# print(f"La valeur de la prime prédite est {prime_pred_2020} €, le res pos est {pospred2020} et le total est {totpred2020}")
+# print(f"La vraie valeur perdue est {primevraie2020} € ainsi que le res pos {pos2020} € et le total {tot2020} ")
+# print(f"Soit un résultat net de prime de {pos2020 - prime_pred_2020}")

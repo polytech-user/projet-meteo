@@ -6,7 +6,7 @@ from loader import Commune
 from tarification import client_result_average_other_method, client_result_average_best_method
 from pdfmod import remplacer_texte_stylise_liste
 from pluie import get_precipitation_x_years_ago_np, average_annual_precipitation
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 
@@ -25,11 +25,11 @@ def tarification():
         couts_fixes = float(couts_fixes_str)
         pluviometrie = float(pluviometrie_str)
         
-        today = str(datetime.today().date())
+        today = str((datetime.today().date() - timedelta(days=1)))
         ville = request.form['ville']
-        
+        print(today)
         # Call the function with the parameters
-        prime = client_result_average_best_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
+        prime, _, _, _ = client_result_average_best_method(ville, today, chiffre_affaire, couts_fixes, pluviometrie)
         prime_str = str(prime)
         
         # Stocke les valeurs en str pour le devis
@@ -99,4 +99,16 @@ def generate_quote():
     return redirect(url_for('routes.view_pdf'))
 
 
+@routes.route("/analyse-retrospective", methods=['GET', 'POST'])
+def analyse():
+    if request.method == 'POST':
+        chiffre_affaire = float(request.form['chiffre_affaire'])
+        couts_fixes = float(request.form['couts_fixes'])
+        pluviometrie = float(request.form['pluviometrie'])
 
+        annee = int(request.form['annee'])
+        ville = request.form['ville']    
+    
+    
+    
+    return render_template('analyse.html')

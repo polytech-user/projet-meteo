@@ -10,7 +10,7 @@
     </head>
 <body>
     <div class="form-container">
-        <h2>Calculer la tarification</h2>
+        <h2>Analyse rétrospective</h2>
         {% if message %}
             <p class="success-message">{{ message }}</p>
         {% endif %}
@@ -23,6 +23,12 @@
             
             <label for="pluviometrie">Niveau de pluviométrie journalier pivot (en mm)</label>
             <input type="number" id="pluviometrie" name="pluviometrie" placeholder="Entrez le niveau de pluviométrie" required step="0.1">
+            <label for="annee">Année souhaitée pour le calcul du tarif d'assurance</label>
+            <input type="number" id="annee" name="annee" placeholder="Entrez l'année" required step="1" min="1960" max="">
+            <script>
+                const currentYear = new Date().getFullYear();                               
+                document.getElementById('annee').max = currentYear;
+            </script>
             <label for="ville">Ville de localisation de votre commerce</label>
             <input type="hidden" name="ville_id" id="ville_id">
             <input type="text" id="ville_input" name="ville" placeholder="Entrez le nom de votre ville ou son code postal" autocomplete="off" required>
@@ -43,7 +49,6 @@
 
     <script src="{{ url_for('static', filename='js/searchCities.js')}}"></script>
     <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
-    <script src="{{ url_for('static', filename='js/checkError.js') }}" type="module"></script>
-
+    
 </body>
 </html>

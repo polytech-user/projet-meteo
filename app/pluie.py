@@ -62,7 +62,7 @@ def get_precipitation_np(city: str, start_date: str, end_date: str) -> tuple[np.
         return None, None
 
 
-
+# print(get_precipitation_np('Nice', '2024-01-01', '2024-12-31'))
 
 
 # Obtenir les valeurs des précipitations depuis x années
@@ -92,12 +92,11 @@ def get_precipitation_x_years_ago_np(city: str, date: str, years: int = 10) -> t
     year, month, day = date.split('-')
     year = str(int(year) - years)
     start_date = '-'.join([year, month, day])
-
     dates, precipitations = get_precipitation_np(city, start_date, date)
     return dates, precipitations
 
 
-
+# print(get_precipitation_x_years_ago_np('Nice', '2025-02-01'))
 
 def average_annual_precipitation(city: str, date: str, years: int = 10) -> list[float]:
     dates, precipitations = get_precipitation_x_years_ago_np(city, date, years)
