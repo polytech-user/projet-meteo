@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse rétrospective</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hatran&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="result-container">
+        <h2>Résultat de l'analyse rétrospective pour l'année {{ annee }}</h2>
+        <div class="chart-container">
+            <canvas id="resultChart" width="1500" height="900"></canvas>
+        </div>
+        <br>
+        <div style="text-align: justify;"> Le résultat total pour l'année <strong>{{ annee }}</strong> de ce commerce sans assurance est de <strong>{{ total_vrai|round(2) }}€.</strong> </div>
+        <br>
+        <div style="text-align: justify;"> Le résultat total pour l'année <strong>{{ annee }}</strong> de ce commerce avec assurance est de <strong>{{ res_positif_vrai|round(2) }}€.</strong> </div>
+        <br>
+        <div style="text-align: justify;"> La prime calculée pour ce commerce est de <strong>{{ prime_predite }}€.</strong> </div>
+        <br>
+        <div style="text-align: justify;"> Le résultat net de prime pour ce commerce est donc de <strong>{{ resultat_net_de_prime | round(2) }}€.</strong> </div>
+        <br>
+        <div style="text-align: justify;">  <strong>{{ mess }}.</strong> </div>
+        <br><br>
+        <button id="back-button">Retour à l'accueil</button>
+        <div id="confirmation-modal" class="modal">
+            <div class="modal-content">
+                <p>Êtes-vous sûr de vouloir retourner à l'accueil ? Les données non sauvegardées seront perdues.</p>
+                <button id="confirm-back">Oui</button>
+                <button id="cancel-back">Non</button>
+            </div>
+        </div>
+    <div id="flask-date-analyse" data-info='{{ dates|tojson|safe }}'></div>
+    <div id="flask-resultats" data-info='{{ liste_resultat|tojson|safe }}'></div>
+    
+    <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
+
+    <script src="{{ url_for('static', filename='js/analyseChart.js') }}"></script>
+</body>
+</html>

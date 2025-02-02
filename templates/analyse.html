@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculer la tarification</title>
+    <title>Analyse rétrospective</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hatran&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -26,7 +26,7 @@
             <label for="annee">Année souhaitée pour le calcul du tarif d'assurance</label>
             <input type="number" id="annee" name="annee" placeholder="Entrez l'année" required step="1" min="1960" max="">
             <script>
-                const currentYear = new Date().getFullYear();                               
+                const currentYear = new Date().getFullYear() - 1;
                 document.getElementById('annee').max = currentYear;
             </script>
             <label for="ville">Ville de localisation de votre commerce</label>
@@ -49,6 +49,7 @@
 
     <script src="{{ url_for('static', filename='js/searchCities.js')}}"></script>
     <script src="{{ url_for('static', filename='js/back_button.js') }}" type="module"></script>
-    
+    <script src="{{ url_for('static', filename='js/checkError.js')}}" type="module"></script>
+   
 </body>
 </html>

@@ -6,6 +6,7 @@ from loader import Commune
 from tarification import client_result_average_other_method, client_result_average_best_method
 from pdfmod import remplacer_texte_stylise_liste
 from pluie import get_precipitation_x_years_ago_np, average_annual_precipitation
+from analyse import analyse_retro
 from datetime import datetime, timedelta
 
 
@@ -108,7 +109,31 @@ def analyse():
 
         annee = int(request.form['annee'])
         ville = request.form['ville']    
-    
-    
+        
+        session['CA'] = chiffre_affaire
+        session['CF'] = couts_fixes
+        session['pluvio'] = pluviometrie
+        session['annee'] = annee
+        session['ville'] = ville
+        
+        
+        return redirect(url_for('routes.resanalyse'))
     
     return render_template('analyse.html')
+
+
+@routes.route("/resultat-analyse", methods=['GET', 'POST'])
+def resanalyse():
+    chiffre_affaire = session.get('CA')
+    couts_fixes = session.get('CF')
+    pluviometrie = session.get('pluvio')
+    annee = session.get('annee')
+    ville = session.get('ville')
+    
+    
+    res_positif_vrai, total_vrai, prime_predite, resultat_net_de_prime, liste_resultat, liste_resultat_non_nul, dates, mess = analyse_retro(ville, annee, chiffre_affaire, couts_fixes, pluviometrie)
+
+    
+    
+    
+    return render_template("resultat-analyse.html", res_positif_vrai=res_positif_vrai, total_vrai=total_vrai, prime_predite=prime_predite, resultat_net_de_prime=resultat_net_de_prime, liste_resultat=liste_resultat, liste_resultat_non_nul=liste_resultat_non_nul, dates=dates, annee=annee, mess=mess)
