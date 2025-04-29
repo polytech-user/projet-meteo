@@ -1,5 +1,7 @@
 # LOGICIEL D’ASSURANCE DE RISQUE METEOROLOGIQUE 🌦️
 
+Projet développé dans le cadre académique par Mathys J.
+
 Une application web de calcul de devis d'assurance en fonction des données historiques des précipitations et de l'emplacement géographique. 
 
 Développée avec Flask et PostgreSQL, conteneurisée via Docker.
