@@ -85,4 +85,40 @@ Pour stopper l'application proprement, placez vous à la racine du projet et ex�
   docker-compose down -v --remove-orphans
   ```
 
+## Fonctionnalités
+### 📊 Calcul de devis d'assurance en fonction des précipitations historiques
+
+L'utilisateur renseigne sa ville et le chiffre d'affaires journalier de son commerce ainsi que le niveau de pluviométrie auquel il souhaite être assuré. L'application calcule le montant de l'assurance en fonction des données historiques de précipitations pour cette ville.
+
+<br>
+
+<img src="images/capture_tarification.png" alt="Interface de tarification" width="800">
+
+<em>Formulaire de calcul d'un devis basé sur les données météorologiques locales</em>
+
+<br>
+<br>
+
+
+<img src="images/capture_tarification2.png" alt="Interface de tarification" width="800">
+
+<em>Résultat de la tarification</em>
+
+<br>
+
+<img src="images/capture_devis.png" alt="Interface de tarification" width="800">
+
+<em>Génération du devis personnalisé au format PDF</em>
+
+<br>
+
+### 🔍 Analyse rétrospective des précipitations
+
+L'utilisateur peut consulter une analyse complète d'une année passée pour une ville donnée. L'application affiche les résultats journaliers pour l'année sélectionnée en fonction des données historiques de précipitations. Le résultat annuel avec et sans assurance du commerce est calculé indiquant si l'assurance aurait été bénéfique ou non.
+
+<br>
+
+<img src="images/capture_analyse.png" alt="Analyse météorologique" width="800"><br>
+<em>Visualisation des résultats journaliers du commerce en fonction des précipitations pour l'année considérée</em>
+
 
