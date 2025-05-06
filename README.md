@@ -75,7 +75,7 @@ Une fois les conteneurs lancés, rendez vous sur votre navigateur et entrez l'ad
 <br>
 
 Vous devriez arriver sur cette interface :<br><br>
-<img src="images/interface.png" alt="Aperçu de l'application" width="800">
+<img src="images/interface.png" alt="Aperçu de l'application" style="border-radius: 10px;" width="800">
 
 
 <br>
@@ -92,25 +92,23 @@ L'utilisateur renseigne sa ville et le chiffre d'affaires journalier de son comm
 
 <br>
 
-<img src="images/capture_tarification.png" alt="Interface de tarification" width="800">
-
+<img src="images/capture_tarification.png" alt="Interface de tarification" style="border-radius: 10px;" width="800">
+<br>
 <em>Formulaire de calcul d'un devis basé sur les données météorologiques locales</em>
 
+
 <br>
+
+<img src="images/capture_tarification2.png" alt="Interface de tarification" style="border-radius: 10px;" width="800">
 <br>
-
-
-<img src="images/capture_tarification2.png" alt="Interface de tarification" width="800">
-
 <em>Résultat de la tarification</em>
 
 <br>
 
-<img src="images/capture_devis.png" alt="Interface de tarification" width="800">
-
+<img src="images/capture_devis.png" alt="Interface de tarification" style="border-radius: 10px;" width="800">
+<br>
 <em>Génération du devis personnalisé au format PDF</em>
 
-<br>
 
 ### 🔍 Analyse rétrospective des précipitations
 
@@ -118,7 +116,7 @@ L'utilisateur peut consulter une analyse complète d'une année passée pour une
 
 <br>
 
-<img src="images/capture_analyse.png" alt="Analyse météorologique" width="800"><br>
+<img src="images/capture_analyse.png" alt="Analyse météorologique" style="border-radius: 10px;" width="800"><br>
 <em>Visualisation des résultats journaliers du commerce en fonction des précipitations pour l'année considérée</em>
 
 
