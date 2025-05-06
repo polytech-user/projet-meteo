@@ -93,20 +93,20 @@ L'utilisateur renseigne sa ville et le chiffre d'affaires journalier de son comm
 <br>
 
 <img src="images/capture_tarification.png" alt="Interface de tarification" style="border-radius: 10px;" width="800">
-<br>
+
 <em>Formulaire de calcul d'un devis basé sur les données météorologiques locales</em>
 
 
 <br>
 
 <img src="images/capture_tarification2.png" alt="Interface de tarification" style="border-radius: 10px;" width="800">
-<br>
+
 <em>Résultat de la tarification</em>
 
 <br>
 
 <img src="images/capture_devis.png" alt="Interface de tarification" style="border-radius: 10px;" width="800">
-<br>
+
 <em>Génération du devis personnalisé au format PDF</em>
 
 
